@@ -22,35 +22,28 @@
     http://www.gnu.org/copyleft/lesser.txt.
     ------------------------------------------------------------------------------------
 */
-#ifndef __ROINT_IMPORT_H
-#define __ROINT_IMPORT_H
+#ifndef __RONET_PACKET_LOGIN2_H
+#define __RONET_PACKET_LOGIN2_H
 
-// The following will ensure that we are exporting our C++ classes when 
-// building the DLL and importing the classes when build an application 
-// using this DLL.
+#include "ronet/packet.h"
 
-#include "roint_settings.h"
+namespace ronet {
 
-#ifndef __WINDOWS__
-#	if defined(WIN32) || defined(WIN64) || defined(_WINDOWS) || defined(_WIN32) || defined(_WIN64)
-#		define __WINDOWS__
-#	endif
-#endif
+// S 02b0 <version>.L <username>.24B <password>.24B <clienttype>.B <ip address>.16B <adapter address>.13B <g_isGravityID>.B
 
-#if defined(ROINT_DLL) && defined(_MSC_VER)
-#	ifdef ROINT_INTERNAL
-#		define ROINT_DLLAPI  __declspec( dllexport )
-#	else
-#		define ROINT_DLLAPI  __declspec( dllimport )
-#	endif
-#else
-#	define ROINT_DLLAPI
-#endif
+	class RONET_DLLAPI pktLogin2 : public Packet {
+	protected:
+		unsigned int version;
+		std::string username, password;
+		unsigned char clienttype;
+		std::string ipaddr, adapteraddr;
+		bool isGravityID;
 
-// Use XML?
-#ifdef ROINT_USE_XML
-#	define TIXML_USE_STL
-#	include "tinyxml/tinyxml.h"
-#endif
+		virtual bool PrepareData();
+	public:
+		pktLogin2();
+		pktLogin2(const std::string& user, const std::string& pass, unsigned int version, const std::string& ip, const std::string& adapter, bool isGravity);
+	};
+}
 
-#endif /* __ROINT_IMPORT_H */
+#endif /* __RONET_PACKET_LOGIN2_H */

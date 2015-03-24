@@ -22,28 +22,53 @@
     http://www.gnu.org/copyleft/lesser.txt.
     ------------------------------------------------------------------------------------
 */
-#ifndef __STDAFX_H
-#define __STDAFX_H
+#include "stdafx.h"
 
-#define TIXML_USE_STL
+#include "ronet/packets/pkt_login2.h"
 
-#include "ro/roint_settings.h"
+ronet::pktLogin2::pktLogin2() : Packet(pktLogin2ID) {
+	//version = 0x14000000;
+	clienttype = 1;
+	setSize(85);
+}
 
-#define ROINT_INTERNAL
+ronet::pktLogin2::pktLogin2(const std::string& user, const std::string& pass, unsigned int version, const std::string& ip, const std::string& adapter, bool isGravity) : Packet(pktLogin2ID) {
+	this->version = version;
+	this->clienttype = 1;
+	setSize(85);
 
-#include "ro/roint_import.h"
-#include "ro/ro.h"
+	username = user;
+	password = pass;
+	ipaddr = ip;
+	adapteraddr = adapter;
 
-#include "log.h"
+	isGravityID = isGravity;
+}
 
-/* TODO: ???????
-#ifndef HAVE_STRNICMP
-#	ifdef HAVE_STRNCASECMP
-#		define strnicmp strncasecmp
-#	else
-#		error "strnicmp is missing!"
-#	endif
-#endif
-*/
 
-#endif /* __STDAFX_H */
+bool ronet::pktLogin2::PrepareData() {
+	unsigned char* ptr = buffer;
+	ptr += sizeof(short); // ID Handled by the caller
+
+	memcpy(ptr, (unsigned char*)&version, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(ptr, username.c_str(), username.length());
+	ptr += 24;
+
+	memcpy(ptr, password.c_str(), password.length());
+	ptr += 24;
+
+	memcpy(ptr, &clienttype, 1);
+	ptr += 1;
+
+	memcpy(ptr, ipaddr.c_str(), ipaddr.length());
+	ptr += 16;
+
+	memcpy(ptr, adapteraddr.c_str(), adapteraddr.length());
+	ptr += 13;
+
+	memcpy(ptr, &isGravityID, 1);
+
+	return(true);
+}

@@ -78,10 +78,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(ProjectDir)\..;$(SDL)\include;$(SolutionDir)..\sdl_engine\include;$(SolutionDir)..\roint\include;$(SolutionDir)..\rogl\include;$(SolutionDir)..\ronet\include;$(SolutionDir)..\roengine\include;$(SolutionDir)\freetype2\include;$(SolutionDir)..\logsys\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;ZLIB_WINAPI;USE_LOGSYS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -95,7 +95,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>libtarga.lib;libpng.lib;ws2_32.lib;opengl32.lib;glu32.lib;glew32s.lib;SDL2.lib;freetype.lib;Vorbis.lib;Ogg.lib;OpenAL32.lib;cAudio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
